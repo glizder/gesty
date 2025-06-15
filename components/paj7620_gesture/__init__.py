@@ -32,10 +32,9 @@ CONFIG_SCHEMA = cv.Schema(
 
 # Ta funkcja 'to_code' jest wywoływana, gdy parser ESPHome napotka sekcję 'paj7620_gesture:' w YAML.
 async def to_code(config):
-    var = cg.new_Pvariable(config[CONF_ID])
-
-    await cg.register_component(var, config)
+    var = await cg.register_component(config, PAJ7620GestureComponent.new())
     await i2c.register_i2c_device(var, config)
-
-    cg.add(var.set_name(config[CONF_NAME]))
-    await text_sensor.register_text_sensor(sens, config[CONF_GESTURE])
+    if CONF_GESTURE in config:
+        sens = await text_sensor.new_text_sensor(config[CONF_GESTURE])
+        cg.add(var.set_gesture_sensor(sens))
+        await text_sensor.register_text_sensor(sens, config[CONF_GESTURE])
