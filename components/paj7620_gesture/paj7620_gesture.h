@@ -1,8 +1,8 @@
 #pragma once
 
 #include "esphome/core/component.h"
-#include "esphome/components/text_sensor/text_sensor.h" // Zmieniono z powrotem na pełną ścieżkę
-#include "esphome/components/i2c/i2c.h"             // Zmieniono z powrotem na pełną ścieżkę
+#include "text_sensor/text_sensor.h" // Poprawiona ścieżka dołączenia
+#include "i2c/i2c.h"             // Poprawiona ścieżka dołączenia
 #include "esphome/core/log.h"
 
 // Stałe adresy rejestrów PAJ7620
@@ -19,7 +19,7 @@
 #define PAJ7620_GESTURE_UP 0x01
 #define PAJ7620_GESTURE_DOWN 0x02
 #define PAJ7620_GESTURE_LEFT 0x03
-#Xdefine PAJ7620_GESTURE_RIGHT 0x04
+#define PAJ7620_GESTURE_RIGHT 0x04
 #define PAJ7620_GESTURE_FORWARD 0x05
 #define PAJ7620_GESTURE_BACKWARD 0x06
 #define PAJ7620_GESTURE_CLOCKWISE 0x07
