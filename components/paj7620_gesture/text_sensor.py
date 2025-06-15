@@ -3,6 +3,8 @@ import esphome.config_validation as cv
 from esphome.components import text_sensor
 from esphome.const import CONF_ID
 
+from ..paj7620_gesture import PAJ7620GestureComponent
+
 CONFIG_SCHEMA = text_sensor.text_sensor_schema(
     {
         cv.GenerateID(): cv.declare_id(PAJ7620GestureComponent),
