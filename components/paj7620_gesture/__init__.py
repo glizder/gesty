@@ -19,22 +19,29 @@ CODEOWNERS = ["@glizder"]
 DEPENDENCIES = ["i2c"]
 
 # Schemat konfiguracji YAML dla naszego sensora gestów
-CONFIG_SCHEMA = (
-    text_sensor.TEXT_SENSOR_SCHEMA
-    .extend(
-        {
-            cv.GenerateID(): cv.declare_id(PAJ7620GestureSensor),
-            cv.Required(CONF_ID): cv.declare_id(PAJ7620GestureSensor),
-            cv.Optional(CONF_ADDRESS, default=0x73): cv.i2c_address,
-            cv.Optional(CONF_UPDATE_INTERVAL, default="50ms"): cv.positive_time_period_milliseconds,
-        }
-    )
-    .extend(i2c.i2c_device_schema(0x73))
-)
+# Jest to schemat, który będzie używany w sekcji 'text_sensor:'
+CONFIG_SCHEMA = text_sensor.TEXT_SENSOR_SCHEMA.extend(
+    {
+        cv.GenerateID(): cv.declare_id(PAJ7620GestureSensor),
+        cv.Required(CONF_ID): cv.declare_id(PAJ7620GestureSensor), # Dodane, aby ID było wymagane przez schemat
+        cv.Optional(CONF_ADDRESS, default=0x73): cv.i2c_address,
+        cv.Optional(CONF_UPDATE_INTERVAL, default="50ms"): cv.positive_time_period_milliseconds,
+    }
+).extend(i2c.i2c_device_schema(0x73)) # Rozszerzamy o schemat dla urządzenia I2C (z domyślnym adresem)
 
-# Funkcja odpowiedzialna za generowanie kodu C++ na podstawie konfiguracji YAML
-async def to_code(config):
+
+# Nowa funkcja setup_platform jest wymagana, gdy komponent dostarcza platformę
+async def setup_platform(config, async_add_entities):
+    """Set up the PAJ7620 gesture sensor platform."""
+    # Tworzymy nową zmienną klasy PAJ7620GestureSensor
     var = cg.new_Pvariable(config[CONF_ID])
+
+    # Rejestrujemy komponent w ESPHome
+    # 'await cg.register_component(var, config)' jest potrzebne dla PollingComponent
     await cg.register_component(var, config)
-    await text_sensor.register_text_sensor(var, config)
+
+    # Rejestrujemy komponent jako urządzenie I2C
     await i2c.register_i2c_device(var, config)
+
+    # Dodajemy encję sensora do listy encji Home Assistant
+    async_add_entities([var])
