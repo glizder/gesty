@@ -27,7 +27,7 @@ CONFIG_SCHEMA = (
 )
 
 async def to_code(config):
-    var = cg.new_Pvariable(config[CONF_ID])
+    var = await cg.get_variable(config[CONF_ID])
     await cg.register_component(config, var)
     await i2c.register_i2c_device(var, config)
     if CONF_GESTURE in config:
