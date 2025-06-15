@@ -1,8 +1,8 @@
 #pragma once
 
 #include "esphome/core/component.h"
-#include "esphome/components/text_sensor/text_sensor.h"
-#include "esphome/components/i2c/i2c.h"
+#include "text_sensor/text_sensor.h" // Poprawiona ścieżka dołączenia
+#include "i2c/i2c.h"             // Poprawiona ścieżka dołączenia
 #include "esphome/core/log.h"
 
 // Stałe adresy rejestrów PAJ7620
@@ -45,14 +45,12 @@ protected:
     uint8_t read_gesture_data();
     std::string gesture_to_string(uint8_t gesture_code);
 
-    // Struktura do przechowywania pary rejestr-dane
     struct RegData {
         uint8_t reg;
         uint8_t data;
     };
 
-    // Pełne dane inicjalizacyjne z Waveshare Wiki (lub podobnych źródeł)
-    // Zapewnia poprawną pracę sensora
+    // Pełne dane inicjalizacyjne z Waveshare Wiki / oficjalnych bibliotek
     static const RegData INIT_BANK0_REG_ARRAY[];
     static const uint8_t INIT_BANK0_REG_ARRAY_SIZE;
 
