@@ -38,4 +38,4 @@ async def to_code(config):
     await i2c.register_i2c_device(var, config)
 
     cg.add(var.set_name(config[CONF_NAME]))
-    await text_sensor.register_text_sensor(var, config)
+    await text_sensor.register_text_sensor(sens, config[CONF_GESTURE])
